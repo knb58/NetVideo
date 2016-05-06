@@ -29,10 +29,10 @@ void Customer::addRental(const Rental& rental) {
     rentals.push_back(rental);
 }
 //calculates amount for current statement
-double amountFor(){
+double amountFor(const Rental& r){
 
         double thisAmount = 0;
-        switch(it->getVideo().getCode()) {
+        switch(r.getVideo().getCode()) {
 
             case Video::REGULAR:
             thisAmount += 2;
@@ -50,7 +50,7 @@ double amountFor(){
                 thisAmount += (it->getDaysRented() - 3) * 1.5;
             break;
         }
-
+return thisAmount;
 }
 
 // customer rental statement
@@ -79,7 +79,27 @@ std::string Customer::statement() const {
         result += it->getVideo().getTitle();
         result += "\t";
 
-        amountFor();
+        
+        double thisAmount = 0;
+        switch(it->getVideo().getCode()) {
+
+            case Video::REGULAR:
+            thisAmount += 2;
+            if (it->getDaysRented() > 2)
+                thisAmount += (it->getDaysRented() - 2) * 1.5;
+            break;
+
+            case Video::NEW_RELEASE:
+            thisAmount += it->getDaysRented() * 3;
+            break;
+
+            case Video::CHILDRENS:
+            thisAmount += 1.5;
+            if (it->getDaysRented() > 3)
+                thisAmount += (it->getDaysRented() - 3) * 1.5;
+            break;
+        }
+        this Amount =  amountFor(*it);
         // amount of rental
         std::ostringstream out_str_stream;
         out_str_stream << thisAmount;
